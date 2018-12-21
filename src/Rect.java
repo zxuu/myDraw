@@ -7,11 +7,11 @@ public class Rect implements IShape{
     private int height;
     private GC gcMain;
 
-    public Rect(int top, int left, int height, int width, GC gcMain) {
+    public Rect(int top, int left, int width, int height, GC gcMain) {
         this.top = top;
         this.left = left;
-        this.height = height;
         this.width = width;
+        this.height = height;
         this.gcMain = gcMain;
     }
 

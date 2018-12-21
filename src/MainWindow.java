@@ -30,7 +30,8 @@ public class MainWindow {
 
             @Override
             public void mouseUp(MouseEvent e) {
-                gcMian.drawRectangle(e.x,e.y,100,100);
+                Rect rect = new Rect(e.x,e.x,100,100,gcMian);
+                rect.draw();
             }
         });
 
