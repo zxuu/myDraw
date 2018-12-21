@@ -6,6 +6,8 @@ import org.eclipse.swt.widgets.Shell;
 
 public class MainWindow {
     private static GC gcMian = null;
+    private static int startx;
+    private static int starty;
 
     public static void main(String[] args) {
         Display display = Display.getDefault();
@@ -25,17 +27,22 @@ public class MainWindow {
 
             @Override
             public void mouseDown(MouseEvent e) {
-
+                startx = e.x;
+                starty = e.y;
             }
 
             @Override
             public void mouseUp(MouseEvent e) {
-                Rect rect = new Rect(e.x,e.x,100,100,gcMian);
-                rect.draw();
+                if (e.button == 1) {
+                    int weight = e.x - startx;
+                    int height = e.y - starty;
+                    Rect rect = new Rect(startx, starty, weight, height, gcMian);
+                    rect.draw();
+                }
             }
         });
 
-        shell.setSize(450,300);
+        shell.setSize(900,500);
         shell.setText("SWT Application");
         shell.open();
         shell.layout();
