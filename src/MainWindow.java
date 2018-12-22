@@ -1,3 +1,4 @@
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.GC;
@@ -8,6 +9,9 @@ public class MainWindow {
     private static GC gcMian = null;
     private static int startx;
     private static int starty;
+    private static boolean leftButtonDown = false;
+    private static int lastwidth = 0;
+    private static int lastheight = 0;
 
     public static void main(String[] args) {
         Display display = Display.getDefault();
@@ -16,7 +20,16 @@ public class MainWindow {
         shell.addMouseMoveListener(new MouseMoveListener() {
             @Override
             public void mouseMove(MouseEvent mouseEvent) {
-
+                if (leftButtonDown) {
+                    gcMian.setLineStyle(SWT.LINE_DOT);
+                    gcMian.setForeground(shell.getBackground());
+                    gcMian.drawRectangle(startx, starty, lastwidth, lastheight);
+                    gcMian.setForeground(display.getSystemColor(SWT.COLOR_BLUE));
+                    gcMian.drawRectangle(startx,starty,mouseEvent.x-startx,mouseEvent.y-starty);
+                    lastwidth = mouseEvent.x - startx;
+                    lastheight = mouseEvent.y - starty;
+                    gcMian.setLineStyle(SWT.LINE_SOLID);
+                }
             }
         });
         shell.addMouseListener(new org.eclipse.swt.events.MouseAdapter() {
@@ -27,6 +40,7 @@ public class MainWindow {
 
             @Override
             public void mouseDown(MouseEvent e) {
+                leftButtonDown = true;
                 startx = e.x;
                 starty = e.y;
             }
@@ -34,6 +48,7 @@ public class MainWindow {
             @Override
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
+                    leftButtonDown = false;
                     int weight = e.x - startx;
                     int height = e.y - starty;
                     Rect rect = new Rect(startx, starty, weight, height, gcMian);
