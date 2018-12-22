@@ -1,9 +1,12 @@
+import model.Circle;
+import model.Rect;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import view.Board;
 
 public class MainWindow {
     private static GC gcMian = null;
@@ -14,6 +17,7 @@ public class MainWindow {
     private static int lastheight = 0;
 
     public static void main(String[] args) {
+        Board board = new Board();
         Display display = Display.getDefault();
         Shell shell = new Shell();
         gcMian = new GC(shell);
@@ -51,8 +55,14 @@ public class MainWindow {
                     leftButtonDown = false;
                     int weight = e.x - startx;
                     int height = e.y - starty;
-                    Rect rect = new Rect(startx, starty, weight, height, gcMian);
-                    rect.draw();
+                    gcMian.setLineStyle(SWT.LINE_DOT);
+                    gcMian.setForeground(shell.getBackground());
+                    gcMian.drawRectangle(startx,starty,weight,height);
+                    gcMian.setLineStyle(SWT.LINE_SOLID);
+                    gcMian.setForeground(display.getSystemColor(SWT.COLOR_BLACK));
+                    Circle circle = new Circle(startx, starty, weight, height, gcMian);
+                    board.addShape(circle);
+                    board.refresh();
                 }
             }
         });
